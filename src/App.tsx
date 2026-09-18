@@ -12,6 +12,7 @@ import DayDetail from './pages/DayDetail'
 import Menus from './pages/Menus'
 import Shopping from './pages/Shopping'
 import MenuEditor from './pages/MenuEditor'
+import MenuDetail from './pages/MenuDetail'
 import Foods from './pages/Foods'
 import FoodEditor from './pages/FoodEditor'
 import Settings from './pages/Settings'
@@ -121,7 +122,8 @@ export default function App() {
         <Route path="/spesa" element={<Shopping />} />
         <Route path="/menu" element={<Menus />} />
         <Route path="/menu/nuovo" element={<MenuEditor />} />
-        <Route path="/menu/:id" element={<MenuEditor />} />
+        <Route path="/menu/:id" element={<MenuDetail />} />
+        <Route path="/menu/:id/modifica" element={<MenuEditor />} />
         <Route path="/alimenti" element={<Foods />} />
         <Route path="/alimenti/nuovo" element={<FoodEditor />} />
         <Route path="/alimenti/:id" element={<FoodEditor />} />

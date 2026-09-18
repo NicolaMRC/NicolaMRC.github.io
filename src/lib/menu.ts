@@ -143,3 +143,12 @@ export function opzioneScelta(meal: Meal, optionId: string | undefined): MealOpt
   }
   return meal.options.find((o) => o.items.length > 0) ?? meal.options[0]
 }
+
+/**
+ * Sottotitolo di un menu negli elenchi: la nota se c'è, altrimenti un invito
+ * a scriverla. La nota dice cosa si mangia molto meglio dell'elenco dei pasti.
+ */
+export function notaMenu(menu: DayMenu): { testo: string; invito: boolean } {
+  const nota = menu.notes?.trim()
+  return nota ? { testo: nota, invito: false } : { testo: 'Aggiungi una nota', invito: true }
+}

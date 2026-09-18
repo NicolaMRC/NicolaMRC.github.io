@@ -33,7 +33,6 @@ export default function MenuEditor() {
   const data = useApp((s) => s.data)
   const upsertMenu = useApp((s) => s.upsertMenu)
   const deleteMenu = useApp((s) => s.deleteMenu)
-  const duplicateMenu = useApp((s) => s.duplicateMenu)
   const upsertFood = useApp((s) => s.upsertFood)
 
   const esistente = id ? data?.menus.find((m) => m.id === id) : undefined
@@ -122,7 +121,7 @@ export default function MenuEditor() {
       updatedAt: nowIso(),
     }
     upsertMenu(pulito)
-    navigate('/menu')
+    navigate(esistente ? `/menu/${esistente.id}` : '/menu')
   }
 
   const nomeValido = form.name.trim().length > 0
@@ -131,7 +130,7 @@ export default function MenuEditor() {
     <>
       <Header
         titolo={esistente ? 'Modifica menu' : 'Nuovo menu'}
-        indietro="/menu"
+        indietro={esistente ? `/menu/${esistente.id}` : '/menu'}
         azione={
           esistente ? (
             <button
@@ -409,19 +408,6 @@ export default function MenuEditor() {
           <p className="sottotitolo" style={{ marginTop: 10, textAlign: 'center' }}>
             Gli alimenti lasciati senza quantità non verranno salvati.
           </p>
-          {esistente && (
-            <button
-              type="button"
-              className="bottone secondario pieno"
-              style={{ marginTop: 10 }}
-              onClick={() => {
-                duplicateMenu(esistente.id)
-                navigate('/menu')
-              }}
-            >
-              Duplica questo menu
-            </button>
-          )}
         </div>
       </main>
 

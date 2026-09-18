@@ -17,6 +17,15 @@ export function IconaOggi() {
   )
 }
 
+export function IconaCasa() {
+  return (
+    <svg viewBox="0 0 24 24" {...base} aria-hidden="true">
+      <path d="M4 10.5 12 4l8 6.5V19a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2Z" />
+      <path d="M9.5 21v-6h5v6" />
+    </svg>
+  )
+}
+
 export function IconaAlimenti() {
   return (
     <svg viewBox="0 0 24 24" {...base} aria-hidden="true">
@@ -118,6 +127,24 @@ export function IconaCalendario() {
     <svg viewBox="0 0 24 24" width="21" height="21" {...base} aria-hidden="true">
       <rect x="3" y="5" width="18" height="16" rx="3" />
       <path d="M3 10h18M8 3v4M16 3v4" />
+    </svg>
+  )
+}
+
+export function IconaMatita() {
+  return (
+    <svg viewBox="0 0 24 24" width="20" height="20" {...base} aria-hidden="true">
+      <path d="M4 20h4l10.5-10.5a2.8 2.8 0 0 0-4-4L4 16z" />
+      <path d="M13.5 6.5l4 4" />
+    </svg>
+  )
+}
+
+export function IconaDuplica() {
+  return (
+    <svg viewBox="0 0 24 24" width="20" height="20" {...base} aria-hidden="true">
+      <rect x="9" y="9" width="11" height="11" rx="2.5" />
+      <path d="M15 5.5A2.5 2.5 0 0 0 12.5 3H6.5A2.5 2.5 0 0 0 4 5.5v6A2.5 2.5 0 0 0 6.5 14" />
     </svg>
   )
 }

@@ -6,7 +6,7 @@ import TagChips from '../components/TagChips'
 import RatingStelle from '../components/RatingStelle'
 import { useApp } from '../store/appStore'
 import { byName, normalize } from '../lib/utils'
-import { riassuntoMenu } from '../lib/menu'
+import { notaMenu } from '../lib/menu'
 import { stileMenu } from '../lib/colori'
 
 export default function Menus() {
@@ -100,7 +100,9 @@ export default function Menus() {
                     }}
                   >
                     <div className="voce-titolo">{m.name || 'Senza nome'}</div>
-                    <div className="voce-nota">{riassuntoMenu(m)}</div>
+                    <div className={`voce-nota ${notaMenu(m).invito ? 'nota-mancante' : ''}`}>
+                      {notaMenu(m).testo}
+                    </div>
                   </div>
                   <div style={{ marginTop: 6, marginLeft: -3 }}>
                     <RatingStelle

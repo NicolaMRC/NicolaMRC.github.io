@@ -92,3 +92,26 @@ export function testoGiorno(data: AppData, date: string, menu: DayMenu): string 
 
   return righe.join('\n').trim()
 }
+
+/** Versione testuale di un menu in archivio, con tutte le alternative. */
+export function testoMenu(data: AppData, menu: DayMenu): string {
+  const righe: string[] = [menu.name]
+  if (menu.notes?.trim()) righe.push('', menu.notes.trim())
+  righe.push('')
+
+  for (const pasto of menu.meals) {
+    const opzioni = pasto.options.filter((o) => o.items.length > 0)
+    if (opzioni.length === 0) continue
+    righe.push(MEAL_LABELS[pasto.key].toUpperCase())
+    opzioni.forEach((opzione, indice) => {
+      if (opzioni.length > 1) righe.push(`  ${opzione.name || `Alternativa ${indice + 1}`}`)
+      for (const item of opzione.items) {
+        const alimento = data.foods.find((f) => f.id === item.foodId)
+        const quantita = descriviQuantita(item, alimento)
+        righe.push(`- ${alimento?.name ?? 'Alimento rimosso'}${quantita ? ` — ${quantita}` : ''}`)
+      }
+    })
+    righe.push('')
+  }
+  return righe.join('\n').trim()
+}

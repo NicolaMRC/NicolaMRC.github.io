@@ -937,3 +937,9 @@ textarea:focus {
   backdrop-filter: none;
   border-bottom-color: transparent;
 }
+
+/* Invito tenue al posto di una nota mancante. */
+.nota-mancante {
+  font-style: italic;
+  opacity: 0.55;
+}

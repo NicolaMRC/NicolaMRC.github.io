@@ -5,7 +5,7 @@ import TagChips from '../components/TagChips'
 import RatingStelle from '../components/RatingStelle'
 import { giornoDi, useApp } from '../store/appStore'
 import { byName, normalize } from '../lib/utils'
-import { riassuntoMenu } from '../lib/menu'
+import { notaMenu } from '../lib/menu'
 import { stileMenu } from '../lib/colori'
 import { descriviGiorno } from '../lib/date'
 import { definizioneTag, ordinaTag } from '../lib/tags'
@@ -123,7 +123,9 @@ export default function ChooseMenu() {
               </span>
               {assegnato === menu.id && <span className="etichetta dispensa">assegnato</span>}
             </div>
-            <div className="voce-nota">{nota ?? riassuntoMenu(menu)}</div>
+            <div className={`voce-nota ${!nota && notaMenu(menu).invito ? 'nota-mancante' : ''}`}>
+              {nota ?? notaMenu(menu).testo}
+            </div>
           </div>
           <div style={{ marginTop: 6, marginLeft: -3 }}>
             <RatingStelle

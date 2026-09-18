@@ -4,7 +4,7 @@ import TagChips from './TagChips'
 import { giornoDi, useApp } from '../store/appStore'
 import { giornoBreve } from '../lib/date'
 import { byName, normalize } from '../lib/utils'
-import { riassuntoMenu } from '../lib/menu'
+import { notaMenu } from '../lib/menu'
 import { stileMenu } from '../lib/colori'
 import { definizioneTag, ordinaTag } from '../lib/tags'
 import type { DayMenu } from '../types'
@@ -156,7 +156,9 @@ export default function MenuPicker({ date, onChiudi, onScegli }: Props) {
                   </span>
                   <TagChips tags={m.tags} soloEmoji />
                 </div>
-                <div className="voce-nota">{riassuntoMenu(m)}</div>
+                <div className={`voce-nota ${notaMenu(m).invito ? 'nota-mancante' : ''}`}>
+                  {notaMenu(m).testo}
+                </div>
               </div>
               {giorno?.menuId === m.id && <span className="etichetta dispensa">assegnato</span>}
             </button>

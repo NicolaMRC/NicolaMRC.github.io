@@ -67,6 +67,22 @@ quella nel cloud:
 Tenendo la copia locale, quella nel cloud non viene persa: resta nella
 cronologia dei commit e può essere ripristinata.
 
+## Come è organizzata la navigazione
+
+Quattro sezioni in basso: **Home**, **Spesa**, **Menu**, **Altro**.
+
+- **Home** mostra un giorno alla volta, oggi all'apertura. Si cambia giorno
+  scorrendo col dito a destra o a sinistra, con le frecce, oppure tornando a
+  oggi dal pulsante centrale. La settimana non è più una sezione a sé: è il
+  pulsante in alto a destra, che apre la stessa schermata di prima.
+- **Menu** elenca l'archivio. Toccare una scheda apre il menu con la stessa
+  impaginazione della Home — titolo, nota, stelle, tag, pasti — dove però le
+  alternative sono mostrate tutte, perché quale fare si decide nel giorno.
+  Da lì la matita porta all'editor.
+- Negli elenchi (archivio, ricerca, settimana) il sottotitolo di un menu è la
+  **sua nota**: dice cosa si mangia molto meglio dell'elenco dei pasti. Quando
+  manca, al suo posto compare in corsivo l'invito a scriverla.
+
 ## Struttura
 
 ```

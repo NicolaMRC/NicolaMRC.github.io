@@ -24,6 +24,7 @@ import {
   menuUtilizzabili,
 } from '../lib/random'
 import { definizioneTag } from '../lib/tags'
+import { notaMenu } from '../lib/menu'
 import { stileMenu } from '../lib/colori'
 import type { DayMenu } from '../types'
 
@@ -105,7 +106,7 @@ export default function Week() {
 
   return (
     <>
-      <Header titolo="Settimana" sottotitolo={intervalloSettimana(inizio)} mostraSync />
+      <Header titolo="Settimana" sottotitolo={intervalloSettimana(inizio)} indietro="/" />
       <main className="contenuto">
         <div style={{ display: 'flex', gap: 8, marginBottom: 12 }}>
           <button
@@ -271,13 +272,21 @@ export default function Week() {
                 </div>
 
                 {menu && !giorno?.skipped && (
-                  <div style={{ marginTop: 6, marginLeft: -3 }}>
-                    <RatingStelle
-                      valore={menu.rating ?? 0}
-                      piccolo
-                      onCambia={(valore) => impostaRating(menu.id, valore)}
-                    />
-                  </div>
+                  <>
+                    <div
+                      className={`voce-nota ${notaMenu(menu).invito ? 'nota-mancante' : ''}`}
+                      style={{ marginTop: 4, whiteSpace: 'normal' }}
+                    >
+                      {notaMenu(menu).testo}
+                    </div>
+                    <div style={{ marginTop: 6, marginLeft: -3 }}>
+                      <RatingStelle
+                        valore={menu.rating ?? 0}
+                        piccolo
+                        onCambia={(valore) => impostaRating(menu.id, valore)}
+                      />
+                    </div>
+                  </>
                 )}
               </div>
             )
