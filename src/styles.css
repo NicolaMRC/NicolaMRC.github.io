@@ -16,6 +16,7 @@
   --ambra: #7a5c12;
   --ambra-chiaro: #f7f1e2;
   --stella: #141414;
+  --stella-vuota: #a9a9a4;
   --raggio: 14px;
   --raggio-sm: 10px;
   --ombra: 0 1px 2px rgba(0, 0, 0, 0.05), 0 4px 12px rgba(0, 0, 0, 0.05);
@@ -40,6 +41,7 @@
   --ambra: #e5c68a;
   --ambra-chiaro: #272115;
   --stella: #f2f2f0;
+  --stella-vuota: #74746f;
   --ombra: 0 1px 2px rgba(0, 0, 0, 0.35), 0 4px 12px rgba(0, 0, 0, 0.3);
   }
 }
@@ -61,6 +63,7 @@
   --ambra: #e5c68a;
   --ambra-chiaro: #272115;
   --stella: #f2f2f0;
+  --stella-vuota: #74746f;
   --ombra: 0 1px 2px rgba(0, 0, 0, 0.35), 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
@@ -834,7 +837,9 @@ textarea:focus {
   margin: 0;
   line-height: 0;
   cursor: pointer;
-  color: var(--bordo);
+  /* Grigio medio, non il colore del bordo: le stelle vuote stanno spesso
+     sopra la sfumatura di un menu e lì un contorno tenue sparisce. */
+  color: var(--stella-vuota);
 }
 
 .stella.piena {
@@ -888,9 +893,9 @@ textarea:focus {
   pointer-events: none;
   background: linear-gradient(
     180deg,
-    rgb(var(--menu-rgb) / 0.5) 0%,
-    rgb(var(--menu-rgb) / 0.24) 45%,
-    rgb(var(--menu-rgb) / 0.07) 75%,
+    rgb(var(--menu-rgb) / 0.45) 0%,
+    rgb(var(--menu-rgb) / 0.2) 45%,
+    rgb(var(--menu-rgb) / 0.06) 75%,
     transparent 100%
   );
 }
@@ -904,9 +909,9 @@ textarea:focus {
 /* Bagliore che entra dai bordi: per le schede ristrette negli elenchi. */
 .bagliore-menu {
   box-shadow:
-    inset 0 0 30px -10px rgb(var(--menu-rgb) / 0.85),
+    inset 0 0 34px -8px rgb(var(--menu-rgb) / 0.7),
     var(--ombra);
-  border-color: rgb(var(--menu-rgb) / 0.4);
+  border-color: rgb(var(--menu-rgb) / 0.55);
 }
 
 /* Pastiglie della palette nell'editor. */

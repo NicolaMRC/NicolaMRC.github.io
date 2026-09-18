@@ -185,7 +185,7 @@ export default function MenuEditor() {
                     aria-label={colore.nome}
                     aria-pressed={attivo}
                     title={colore.nome}
-                    style={{ background: `rgb(${colore.rgb} / 0.55)` }}
+                    style={{ background: `rgb(${colore.rgb})` }}
                     onClick={() => setForm({ ...form, color: colore.id })}
                   />
                 )

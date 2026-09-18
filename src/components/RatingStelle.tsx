@@ -5,14 +5,19 @@ interface Props {
   piccolo?: boolean
 }
 
+/**
+ * La stella vuota non è un semplice contorno: tiene un velo di riempimento,
+ * perché sulle sfumature colorate dei menu il solo profilo si perde.
+ */
 function Stella({ piena, size }: { piena: boolean; size: number }) {
   return (
     <svg viewBox="0 0 24 24" width={size} height={size} aria-hidden="true">
       <path
         d="M12 3.2l2.6 5.3 5.8.85-4.2 4.1 1 5.75L12 16.5l-5.2 2.7 1-5.75-4.2-4.1 5.8-.85z"
-        fill={piena ? 'currentColor' : 'none'}
+        fill="currentColor"
+        fillOpacity={piena ? 1 : 0.18}
         stroke="currentColor"
-        strokeWidth="1.6"
+        strokeWidth="1.7"
         strokeLinejoin="round"
       />
     </svg>
