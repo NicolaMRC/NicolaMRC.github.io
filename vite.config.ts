@@ -36,5 +36,13 @@ export default defineConfig({
       }
     })
   ],
+  // Marca temporale della compilazione, mostrata in "Altro". Serve a capire
+  // quale versione sta girando su un telefono: il service worker aggiorna
+  // l'app da solo e senza questa non c'è modo di dirlo guardando lo schermo.
+  define: {
+    __VERSIONE__: JSON.stringify(
+      new Date().toLocaleString('it-IT', { dateStyle: 'short', timeStyle: 'short' }),
+    ),
+  },
   server: { port: 5180 }
 })

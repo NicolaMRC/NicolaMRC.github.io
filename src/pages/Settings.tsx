@@ -274,6 +274,10 @@ export default function Settings() {
               Compare nei messaggi di salvataggio per distinguere le modifiche fatte da dispositivi
               diversi.
             </p>
+            <p className="sottotitolo" style={{ marginTop: 10 }}>
+              Versione installata: <span className="mono">{__VERSIONE__}</span>. L’app si aggiorna
+              da sola: se questa data è vecchia, chiudila del tutto e riaprila.
+            </p>
           </div>
         </div>
       </main>

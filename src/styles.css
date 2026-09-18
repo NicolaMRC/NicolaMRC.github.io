@@ -115,6 +115,7 @@ p {
 /* ------------------------------------------------------------- layout */
 
 .app {
+  position: relative;
   min-height: 100dvh;
   display: flex;
   flex-direction: column;
@@ -895,7 +896,9 @@ textarea:focus {
  * dello schermo e si esaurisce all'altezza del titolo del menu.
  */
 .gradiente-oggi {
-  position: fixed;
+  /* Assoluta e non fissa: su iOS un livello fisso viene composto a parte
+     e puo' restare dipinto com'era mentre la pagina sotto e' gia' cambiata. */
+  position: absolute;
   top: 0;
   left: 0;
   right: 0;
