@@ -39,9 +39,16 @@ export default defineConfig({
   // Marca temporale della compilazione, mostrata in "Altro". Serve a capire
   // quale versione sta girando su un telefono: il service worker aggiorna
   // l'app da solo e senza questa non c'è modo di dirlo guardando lo schermo.
+  // Il fuso è fissato di proposito: la compilazione che conta avviene sui
+  // server di GitHub, che lavorano in UTC, e un orario indietro di due ore
+  // farebbe sembrare vecchia una versione appena pubblicata.
   define: {
     __VERSIONE__: JSON.stringify(
-      new Date().toLocaleString('it-IT', { dateStyle: 'short', timeStyle: 'short' }),
+      new Date().toLocaleString('it-IT', {
+        dateStyle: 'short',
+        timeStyle: 'short',
+        timeZone: 'Europe/Rome',
+      }),
     ),
   },
   server: { port: 5180 }
