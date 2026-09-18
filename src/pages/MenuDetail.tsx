@@ -8,7 +8,8 @@ import { IconaCondividi, IconaDuplica, IconaMatita } from '../components/Icons'
 import { useApp } from '../store/appStore'
 import { notaMenu } from '../lib/menu'
 import { testoMenu } from '../lib/giorno'
-import { stileMenu } from '../lib/colori'
+import { coloreDi, stileMenu } from '../lib/colori'
+import { useBarraStato } from '../lib/barraStato'
 
 /**
  * La scheda di un menu in archivio: stessa impaginazione della giornata, ma
@@ -23,6 +24,8 @@ export default function MenuDetail() {
   const [messaggio, setMessaggio] = useState<string | null>(null)
 
   const menu = data?.menus.find((m) => m.id === id)
+  useBarraStato(coloreDi(menu?.color)?.rgb)
+
   if (!menu) return <Navigate to="/menu" replace />
 
   const nota = notaMenu(menu)
@@ -45,7 +48,7 @@ export default function MenuDetail() {
   return (
     <>
       {menu.color && (
-        <div className="gradiente-oggi" style={stileMenu(menu)} aria-hidden="true" />
+        <div key={menu.color} className="gradiente-oggi" style={stileMenu(menu)} aria-hidden="true" />
       )}
       <Header titolo="Menu" indietro="/menu" trasparente={Boolean(menu.color)} />
       <main className="contenuto">

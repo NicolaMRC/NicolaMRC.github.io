@@ -20,7 +20,8 @@ import {
 import { generaSettimana, menuUtilizzabili } from '../lib/random'
 import { notaMenu } from '../lib/menu'
 import { testoGiorno } from '../lib/giorno'
-import { stileMenu } from '../lib/colori'
+import { coloreDi, stileMenu } from '../lib/colori'
+import { useBarraStato } from '../lib/barraStato'
 
 /** Spostamento orizzontale minimo perché un tocco valga come scorrimento. */
 const SOGLIA_SCORRIMENTO = 55
@@ -112,11 +113,14 @@ export default function Home() {
 
   const nota = menu ? notaMenu(menu) : null
   const conMenu = Boolean(menu && !giorno?.skipped)
+  useBarraStato(conMenu ? coloreDi(menu?.color)?.rgb : undefined)
 
   return (
     <>
       {conMenu && menu?.color && (
-        <div className="gradiente-oggi" style={stileMenu(menu)} aria-hidden="true" />
+        // La chiave rifà l'elemento invece di cambiargli una variabile: è un
+        // livello fisso, e Safari sa tenerne in giro uno dipinto com'era.
+        <div key={menu.color} className="gradiente-oggi" style={stileMenu(menu)} aria-hidden="true" />
       )}
       <Header
         titolo={maiuscola(etichetta)}

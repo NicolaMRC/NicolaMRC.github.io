@@ -5,6 +5,7 @@ import Modal from './components/Modal'
 import { useApp } from './store/appStore'
 import { resolveConflict } from './sync/syncEngine'
 import { formatWhen } from './lib/utils'
+import { ridipingiBarraStato } from './lib/barraStato'
 import Home from './pages/Home'
 import Week from './pages/Week'
 import ChooseMenu from './pages/ChooseMenu'
@@ -82,12 +83,9 @@ function useTema() {
     if (tema === 'auto') delete radice.dataset.theme
     else radice.dataset.theme = tema === 'scuro' ? 'dark' : 'light'
 
-    // La barra di stato di iOS segue il colore di sfondo effettivo.
-    const meta = document.querySelector('meta[name="theme-color"]')
-    if (meta) {
-      const sfondo = getComputedStyle(radice).getPropertyValue('--sfondo').trim()
-      if (sfondo) meta.setAttribute('content', sfondo)
-    }
+    // La barra di stato di iOS segue i colori del tema appena applicato,
+    // tenendosi però la tinta del menu se la schermata aperta ne ha una.
+    ridipingiBarraStato()
   }, [tema])
 }
 
