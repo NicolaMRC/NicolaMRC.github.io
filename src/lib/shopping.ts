@@ -1,19 +1,39 @@
 import type { AppData, Food, ShoppingItem, ShoppingList, Unit } from '../types'
 import { giornoDi } from './plan'
-import { opzioneScelta, quantitaBase } from './menu'
+import { opzioneScelta, pluralizza, quantitaBase } from './menu'
 import { ingredientiPerPorzione } from './varianti'
 import { descriviGiorno, parseIsoDate } from './date'
 import { byName, formatNumber, nowIso, uid } from './utils'
 
+export interface Fabbisogno {
+  /** Quanto serve in tutto il periodo, per una persona. */
+  quantita: number
+  /** In quanti pasti del periodo ricorre l'alimento. */
+  pasti: number
+}
+
 /**
- * Somma di quanto serve, per alimento, nell'intervallo di giorni indicato.
+ * Quanto serve di ogni alimento nell'intervallo di giorni indicato, contato
+ * in due modi: la quantità, che serve ad arrotondare ai formati di vendita,
+ * e i pasti, che sono quello che poi si legge in lista.
  *
  * Restano fuori: i giorni esclusi, quelli senza menu e gli alimenti marcati
  * come sempre presenti in dispensa. Quando un pasto ha più alternative si
  * considera quella scelta per quel giorno, non tutte.
  */
-export function calcolaFabbisogno(data: AppData, date: string[]): Map<string, number> {
-  const totali = new Map<string, number>()
+export function calcolaFabbisogno(data: AppData, date: string[]): Map<string, Fabbisogno> {
+  const totali = new Map<string, Fabbisogno>()
+
+  /** `vistiNelPasto` tiene un alimento ripetuto dentro lo stesso pasto a uno. */
+  const somma = (foodId: string, quantita: number, vistiNelPasto: Set<string>) => {
+    const voce = totali.get(foodId) ?? { quantita: 0, pasti: 0 }
+    voce.quantita += quantita
+    if (!vistiNelPasto.has(foodId)) {
+      voce.pasti += 1
+      vistiNelPasto.add(foodId)
+    }
+    totali.set(foodId, voce)
+  }
 
   for (const iso of date) {
     const giorno = giornoDi(data, iso)
@@ -22,6 +42,8 @@ export function calcolaFabbisogno(data: AppData, date: string[]): Map<string, nu
     if (!menu) continue
 
     for (const pasto of menu.meals) {
+      const visti = new Set<string>()
+
       // Una variante applicata sostituisce il pasto del piano: la spesa deve
       // seguire quello che cucinerai davvero, non quello che era previsto.
       const varianteId = giorno.appliedVariants?.[pasto.key]
@@ -30,7 +52,7 @@ export function calcolaFabbisogno(data: AppData, date: string[]): Map<string, nu
         for (const [foodId, quantita] of ingredientiPerPorzione(data, ricetta)) {
           const alimento = data.foods.find((f) => f.id === foodId)
           if (!alimento || alimento.alwaysInPantry) continue
-          totali.set(foodId, (totali.get(foodId) ?? 0) + quantita)
+          somma(foodId, quantita, visti)
         }
         continue
       }
@@ -42,7 +64,7 @@ export function calcolaFabbisogno(data: AppData, date: string[]): Map<string, nu
         if (!alimento || alimento.alwaysInPantry) continue
         const quantita = quantitaBase(item, alimento)
         if (quantita <= 0) continue
-        totali.set(item.foodId, (totali.get(item.foodId) ?? 0) + quantita)
+        somma(item.foodId, quantita, visti)
       }
     }
   }
@@ -68,21 +90,38 @@ export function formatQuantita(valore: number, unit: Unit): string {
   return `${formatNumber(valore)} ${unit}`
 }
 
-/** Etichetta principale di una voce: le confezioni, quando ci sono, o la quantità. */
-export function descriviVoce(item: ShoppingItem, food: Food | undefined): string {
-  if (item.packages && food?.purchaseLabel) {
+/**
+ * Etichetta principale di una voce: in quanti pasti serve.
+ *
+ * I grammi non si leggono più in lista. Davanti al banco «tre pasti di pollo»
+ * dice quello che serve sapere meglio di «540 g», perché le porzioni del piano
+ * sono sempre quelle.
+ */
+export function descriviVoce(item: ShoppingItem, _food?: Food | undefined): string {
+  // Le voci aggiunte a mano non nascono da un menu: tengono la loro quantità.
+  // Come le liste generate prima di questa modifica, che i pasti non li hanno.
+  if (item.manual || item.meals === undefined) {
+    return item.quantity > 0 ? formatQuantita(item.quantity, item.unit) : ''
+  }
+  return `${formatNumber(item.meals)} ${pluralizza('pasto', item.meals)}`
+}
+
+/**
+ * Quante confezioni mettere nel carrello, per gli alimenti che si comprano a
+ * formato. È l'unico numero che sopravvive ai pasti, perché non dice quanto ti
+ * serve ma cosa prendi dallo scaffale.
+ */
+export function descriviConfezioni(item: ShoppingItem, food: Food | undefined): string {
+  if (!item.packages) return ''
+  if (food?.purchaseLabel) {
     return item.packages === 1
       ? food.purchaseLabel
       : `${formatNumber(item.packages)} × ${food.purchaseLabel}`
   }
-  if (item.packages) {
-    return `${formatNumber(item.packages)} × ${formatQuantita(
-      item.quantity / item.packages,
-      item.unit,
-    )}`
-  }
-  if (item.quantity <= 0) return ''
-  return formatQuantita(item.quantity, item.unit)
+  return `${formatNumber(item.packages)} × ${formatQuantita(
+    item.quantity / item.packages,
+    item.unit,
+  )}`
 }
 
 /**
@@ -105,18 +144,20 @@ export function generaVoci(
   const moltiplicatore = Math.max(1, Math.round(persone))
 
   const voci: ShoppingItem[] = []
-  for (const [foodId, perUnaPersona] of fabbisogno) {
+  for (const [foodId, servono] of fabbisogno) {
     const alimento = data.foods.find((f) => f.id === foodId)
     if (!alimento) continue
     // Si moltiplica prima di arrotondare: due porzioni da 240 g fanno 480 g,
-    // cioè ancora un pacco solo, non due.
-    const necessario = perUnaPersona * moltiplicatore
+    // cioè ancora un pacco solo, non due. I pasti invece non si moltiplicano:
+    // una cena per due resta una cena.
+    const necessario = servono.quantita * moltiplicatore
     const { daComprare, confezioni } = arrotondaAlFormato(alimento, necessario)
     voci.push({
       id: uid('voce-'),
       foodId,
       quantity: daComprare,
       needed: necessario,
+      meals: servono.pasti,
       packages: confezioni ?? undefined,
       unit: alimento.unit,
       checked: spuntePrecedenti.get(foodId) ?? false,
@@ -203,9 +244,14 @@ export function testoLista(data: AppData, lista: ShoppingList): string {
     righe.push(gruppo.nome.toUpperCase())
     for (const voce of gruppo.voci) {
       const alimento = voce.foodId ? data.foods.find((f) => f.id === voce.foodId) : undefined
-      const quantita = descriviVoce(voce, alimento)
+      const quanto = descriviVoce(voce, alimento)
+      const confezioni = descriviConfezioni(voce, alimento)
       const spunta = voce.checked ? '[x]' : '[ ]'
-      righe.push(`${spunta} ${nomeVoce(data, voce)}${quantita ? ` — ${quantita}` : ''}`)
+      righe.push(
+        `${spunta} ${nomeVoce(data, voce)}${quanto ? ` — ${quanto}` : ''}${
+          confezioni ? ` (${confezioni})` : ''
+        }`,
+      )
     }
     righe.push('')
   }

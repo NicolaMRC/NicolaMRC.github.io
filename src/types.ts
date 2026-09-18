@@ -186,6 +186,12 @@ export interface ShoppingItem {
   quantity: number
   /** Quantità effettivamente richiesta dai menu, prima dell'arrotondamento. */
   needed?: number
+  /**
+   * In quanti pasti del periodo ricorre l'alimento. È il dato mostrato in
+   * lista al posto della quantità: dice quanto ti serve in un modo che si
+   * capisce a colpo d'occhio. Manca nelle liste generate prima.
+   */
+  meals?: number
   /** Numero di confezioni da prendere, quando l'alimento ha un formato. */
   packages?: number
   unit: Unit

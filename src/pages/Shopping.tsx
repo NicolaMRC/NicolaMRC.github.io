@@ -11,13 +11,13 @@ import {
 } from '../components/Icons'
 import { listaCorrente, useApp } from '../store/appStore'
 import {
+  descriviConfezioni,
   descriviIntervallo,
   descriviVoce,
   nomeVoce,
   raggruppaPerReparto,
   testoLista,
 } from '../lib/shopping'
-import { formatQuantita } from '../lib/shopping'
 import { addDays, isoWeekStart, parseIsoDate, weekDates } from '../lib/date'
 import { toIsoDate } from '../lib/utils'
 import { UNIT_LABELS, type Unit } from '../types'
@@ -109,7 +109,8 @@ export default function Shopping() {
                 <div style={{ minWidth: 0 }}>
                   <strong>{persone === 1 ? 'Per una persona' : `Per ${persone} persone`}</strong>
                   <div className="sottotitolo" style={{ fontSize: 13 }}>
-                    Moltiplica le quantità dei menu, non le voci aggiunte a mano.
+                    I pasti restano quelli: cambia quante confezioni servono per gli alimenti
+                    che si comprano a formato.
                   </div>
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 6, flexShrink: 0 }}>
@@ -206,9 +207,8 @@ export default function Shopping() {
                     const alimento = voce.foodId
                       ? data?.foods.find((f) => f.id === voce.foodId)
                       : undefined
-                    const quantita = descriviVoce(voce, alimento)
-                    const mostraNecessario =
-                      voce.packages && voce.needed && voce.needed < voce.quantity
+                    const quanto = descriviVoce(voce, alimento)
+                    const confezioni = descriviConfezioni(voce, alimento)
                     return (
                       <div
                         key={voce.id}
@@ -230,13 +230,13 @@ export default function Shopping() {
                           <span className="spesa-nome">
                             {data ? nomeVoce(data, voce) : ''}
                           </span>
-                          {mostraNecessario && (
+                          {confezioni && (
                             <span className="spesa-nota" style={{ display: 'block' }}>
-                              ne servono {formatQuantita(voce.needed ?? 0, voce.unit)}
+                              {confezioni}
                             </span>
                           )}
                         </span>
-                        {quantita && <span className="spesa-quantita">{quantita}</span>}
+                        {quanto && <span className="spesa-quantita">{quanto}</span>}
                         {voce.manual && (
                           <button
                             type="button"
@@ -266,8 +266,8 @@ export default function Shopping() {
 
             <p className="sottotitolo" style={{ marginTop: 16, textAlign: 'center' }}>
               In ordine: condividi, aggiungi una voce, ricalcola dai menu, cambia periodo, elimina.
-              Il ricalcolo aggiorna le quantità dopo che hai cambiato la settimana, conservando le
-              spunte e le voci aggiunte a mano.
+              Il ricalcolo rifà la lista dopo che hai cambiato la settimana, conservando le spunte
+              e le voci aggiunte a mano.
             </p>
           </>
         )}
