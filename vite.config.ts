@@ -7,7 +7,7 @@ export default defineConfig({
     react(),
     VitePWA({
       registerType: 'autoUpdate',
-      includeAssets: ['icons/apple-touch-icon.png', 'icons/favicon.png'],
+      includeAssets: ['icons/apple-touch-icon-v2.png', 'icons/favicon-v2.png'],
       manifest: {
         name: 'PrepEat',
         short_name: 'PrepEat',
@@ -20,12 +20,17 @@ export default defineConfig({
         background_color: '#fafaf9',
         theme_color: '#fafaf9',
         icons: [
-          { src: 'icons/icon-192.png', sizes: '192x192', type: 'image/png' },
-          { src: 'icons/icon-512.png', sizes: '512x512', type: 'image/png' },
-          { src: 'icons/icon-512.png', sizes: '512x512', type: 'image/png', purpose: 'maskable' }
+          { src: 'icons/icon-192-v2.png', sizes: '192x192', type: 'image/png' },
+          { src: 'icons/icon-512-v2.png', sizes: '512x512', type: 'image/png' },
+          { src: 'icons/icon-512-v2.png', sizes: '512x512', type: 'image/png', purpose: 'maskable' }
         ]
       },
       workbox: {
+        // Il service worker aggiornato prende il controllo subito: senza
+        // questo, la versione vecchia continuerebbe a servire i file finché
+        // tutte le schede non vengono chiuse.
+        clientsClaim: true,
+        skipWaiting: true,
         globPatterns: ['**/*.{js,css,html,svg,png,woff2}'],
         navigateFallback: '/index.html'
       }
