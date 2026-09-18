@@ -107,9 +107,30 @@ export function descriviVoce(item: ShoppingItem, _food?: Food | undefined): stri
 }
 
 /**
+ * Dettaglio in piccolo sotto il nome: quanto serve davvero in grammi, e
+ * quante confezioni prendere quando l'alimento si compra a formato.
+ *
+ * I pasti dicono a colpo d'occhio quanto ti serve, ma davanti al banco la
+ * cifra da chiedere serve ancora: sta qui, senza rubare la riga principale.
+ */
+export function descriviDettaglio(item: ShoppingItem, food: Food | undefined): string {
+  // Le voci a mano e le liste vecchie mostrano già la quantità come etichetta
+  // principale: ripeterla qui sotto sarebbe solo rumore.
+  if (item.manual || item.meals === undefined) return ''
+
+  const confezioni = descriviConfezioni(item, food)
+  const serve = item.needed ?? item.quantity
+  if (serve <= 0) return confezioni
+
+  const quantita = formatQuantita(serve, item.unit)
+  // Con un formato di vendita le due cifre sono diverse — un pacco da 500 g
+  // per 320 g di fabbisogno — e senza una parola sembrerebbero in conflitto.
+  return confezioni ? `${confezioni} · ne servono ${quantita}` : quantita
+}
+
+/**
  * Quante confezioni mettere nel carrello, per gli alimenti che si comprano a
- * formato. È l'unico numero che sopravvive ai pasti, perché non dice quanto ti
- * serve ma cosa prendi dallo scaffale.
+ * formato: non dice quanto ti serve, ma cosa prendi dallo scaffale.
  */
 export function descriviConfezioni(item: ShoppingItem, food: Food | undefined): string {
   if (!item.packages) return ''
@@ -245,11 +266,11 @@ export function testoLista(data: AppData, lista: ShoppingList): string {
     for (const voce of gruppo.voci) {
       const alimento = voce.foodId ? data.foods.find((f) => f.id === voce.foodId) : undefined
       const quanto = descriviVoce(voce, alimento)
-      const confezioni = descriviConfezioni(voce, alimento)
+      const dettaglio = descriviDettaglio(voce, alimento)
       const spunta = voce.checked ? '[x]' : '[ ]'
       righe.push(
         `${spunta} ${nomeVoce(data, voce)}${quanto ? ` — ${quanto}` : ''}${
-          confezioni ? ` (${confezioni})` : ''
+          dettaglio ? ` (${dettaglio})` : ''
         }`,
       )
     }

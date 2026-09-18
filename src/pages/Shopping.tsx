@@ -11,7 +11,7 @@ import {
 } from '../components/Icons'
 import { listaCorrente, useApp } from '../store/appStore'
 import {
-  descriviConfezioni,
+  descriviDettaglio,
   descriviIntervallo,
   descriviVoce,
   nomeVoce,
@@ -109,8 +109,8 @@ export default function Shopping() {
                 <div style={{ minWidth: 0 }}>
                   <strong>{persone === 1 ? 'Per una persona' : `Per ${persone} persone`}</strong>
                   <div className="sottotitolo" style={{ fontSize: 13 }}>
-                    I pasti restano quelli: cambia quante confezioni servono per gli alimenti
-                    che si comprano a formato.
+                    I pasti restano quelli, perché una cena per due resta una cena: cambiano i
+                    grammi e le confezioni.
                   </div>
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 6, flexShrink: 0 }}>
@@ -208,7 +208,7 @@ export default function Shopping() {
                       ? data?.foods.find((f) => f.id === voce.foodId)
                       : undefined
                     const quanto = descriviVoce(voce, alimento)
-                    const confezioni = descriviConfezioni(voce, alimento)
+                    const dettaglio = descriviDettaglio(voce, alimento)
                     return (
                       <div
                         key={voce.id}
@@ -230,9 +230,9 @@ export default function Shopping() {
                           <span className="spesa-nome">
                             {data ? nomeVoce(data, voce) : ''}
                           </span>
-                          {confezioni && (
+                          {dettaglio && (
                             <span className="spesa-nota" style={{ display: 'block' }}>
-                              {confezioni}
+                              {dettaglio}
                             </span>
                           )}
                         </span>
