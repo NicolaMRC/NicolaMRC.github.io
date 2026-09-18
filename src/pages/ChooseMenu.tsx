@@ -98,7 +98,7 @@ export default function ChooseMenu() {
   function Riga({ menu, nota }: { menu: DayMenu; nota?: string | null }) {
     return (
       <div
-        className={`voce ${menu.color ? 'bagliore-menu' : ''}`}
+        className={`voce ${menu.color ? 'tinta-menu' : ''}`}
         style={{ cursor: 'default', ...stileMenu(menu) }}
       >
         <div className="voce-testo">

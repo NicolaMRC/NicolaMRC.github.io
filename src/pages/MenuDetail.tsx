@@ -47,22 +47,7 @@ export default function MenuDetail() {
       {menu.color && (
         <div className="gradiente-oggi" style={stileMenu(menu)} aria-hidden="true" />
       )}
-      <Header
-        titolo="Menu"
-        indietro="/menu"
-        trasparente={Boolean(menu.color)}
-        azione={
-          <button
-            type="button"
-            className="bottone-icona"
-            aria-label="Modifica il menu"
-            title="Modifica il menu"
-            onClick={() => navigate(`/menu/${menu.id}/modifica`)}
-          >
-            <IconaMatita />
-          </button>
-        }
-      />
+      <Header titolo="Menu" indietro="/menu" trasparente={Boolean(menu.color)} />
       <main className="contenuto">
         <h1 className="titolo-eroe">{menu.name}</h1>
 

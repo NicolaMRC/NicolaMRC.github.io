@@ -140,7 +140,7 @@ export default function MenuPicker({ date, onChiudi, onScegli }: Props) {
             <button
               key={m.id}
               type="button"
-              className={`voce ${m.color ? 'bagliore-menu' : ''}`}
+              className={`voce ${m.color ? 'tinta-menu' : ''}`}
               style={stileMenu(m)}
               onClick={() => onScegli(m.id)}
             >

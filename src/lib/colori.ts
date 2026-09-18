@@ -71,7 +71,7 @@ export function coloreSuggerito(menus: DayMenu[]): string {
 
 /**
  * Espone il colore del menu come variabile CSS. Il disegno vero e proprio —
- * sfumatura dall'alto o bagliore dai bordi — sta nel foglio di stile.
+ * sfumatura dall'alto o barra sul fianco — sta nel foglio di stile.
  */
 export function stileMenu(menu: Pick<DayMenu, 'color'> | undefined): CSSProperties {
   const colore = coloreDi(menu?.color)

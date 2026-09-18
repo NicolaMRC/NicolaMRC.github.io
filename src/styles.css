@@ -17,6 +17,11 @@
   --ambra-chiaro: #f7f1e2;
   --stella: #141414;
   --stella-vuota: #a9a9a4;
+  /* Opacita della sfumatura di un menu: sul chiaro il colore si posa
+     su bianco e basta poco, sullo scuro serve spingere di piu. */
+  --menu-alfa-1: 0.45;
+  --menu-alfa-2: 0.2;
+  --menu-alfa-3: 0.06;
   --raggio: 14px;
   --raggio-sm: 10px;
   --ombra: 0 1px 2px rgba(0, 0, 0, 0.05), 0 4px 12px rgba(0, 0, 0, 0.05);
@@ -42,6 +47,9 @@
   --ambra-chiaro: #272115;
   --stella: #f2f2f0;
   --stella-vuota: #74746f;
+  --menu-alfa-1: 0.62;
+  --menu-alfa-2: 0.3;
+  --menu-alfa-3: 0.1;
   --ombra: 0 1px 2px rgba(0, 0, 0, 0.35), 0 4px 12px rgba(0, 0, 0, 0.3);
   }
 }
@@ -64,6 +72,9 @@
   --ambra-chiaro: #272115;
   --stella: #f2f2f0;
   --stella-vuota: #74746f;
+  --menu-alfa-1: 0.62;
+  --menu-alfa-2: 0.3;
+  --menu-alfa-3: 0.1;
   --ombra: 0 1px 2px rgba(0, 0, 0, 0.35), 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
@@ -893,9 +904,9 @@ textarea:focus {
   pointer-events: none;
   background: linear-gradient(
     180deg,
-    rgb(var(--menu-rgb) / 0.45) 0%,
-    rgb(var(--menu-rgb) / 0.2) 45%,
-    rgb(var(--menu-rgb) / 0.06) 75%,
+    rgb(var(--menu-rgb) / var(--menu-alfa-1)) 0%,
+    rgb(var(--menu-rgb) / var(--menu-alfa-2)) 45%,
+    rgb(var(--menu-rgb) / var(--menu-alfa-3)) 75%,
     transparent 100%
   );
 }
@@ -906,12 +917,17 @@ textarea:focus {
   z-index: 1;
 }
 
-/* Bagliore che entra dai bordi: per le schede ristrette negli elenchi. */
-.bagliore-menu {
+/* Barra di colore sul fianco: segna il menu senza invadere la scheda.
+   È disegnata come ombra interna e non come bordo, così le righe che un
+   colore non ce l'hanno restano allineate con le altre. */
+.tinta-menu {
+  box-shadow: inset 4px 0 0 0 rgb(var(--menu-rgb));
+}
+
+.scheda.tinta-menu {
   box-shadow:
-    inset 0 0 34px -8px rgb(var(--menu-rgb) / 0.7),
+    inset 4px 0 0 0 rgb(var(--menu-rgb)),
     var(--ombra);
-  border-color: rgb(var(--menu-rgb) / 0.55);
 }
 
 /* Pastiglie della palette nell'editor. */
@@ -948,3 +964,4 @@ textarea:focus {
   font-style: italic;
   opacity: 0.55;
 }
+

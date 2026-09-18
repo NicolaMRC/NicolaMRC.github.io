@@ -206,7 +206,7 @@ export default function Week() {
             return (
               <div
                 key={iso}
-                className={`scheda ${menu?.color && !giorno?.skipped ? 'bagliore-menu' : ''}`}
+                className={`scheda ${menu?.color && !giorno?.skipped ? 'tinta-menu' : ''}`}
                 style={{
                   padding: '12px 14px',
                   borderColor: oggi ? 'var(--accento)' : undefined,

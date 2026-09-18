@@ -103,7 +103,7 @@ export interface DayMenu {
   rating?: number
   /** Appunti liberi sul menu: come cucinarlo, cosa ricordarsi, varianti veloci. */
   notes?: string
-  /** Identificativo del colore della palette, per sfumatura e bagliore. */
+  /** Identificativo del colore della palette, per la sfumatura e la barra negli elenchi. */
   color?: string
   createdAt: string
   updatedAt: string

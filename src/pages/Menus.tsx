@@ -83,7 +83,7 @@ export default function Menus() {
             {menu.map((m) => (
               <div
                 key={m.id}
-                className={`voce ${m.color ? 'bagliore-menu' : ''}`}
+                className={`voce ${m.color ? 'tinta-menu' : ''}`}
                 style={{ cursor: 'default', ...stileMenu(m) }}
               >
                 <div className="voce-testo">
