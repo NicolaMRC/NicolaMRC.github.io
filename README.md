@@ -139,6 +139,21 @@ Tutto quello che serve sta in questa cartella e nel repository.
   Stagionalità, caratteristiche e tipo di giornata si impostano a mano.
 - **Acqua**: non viene mai inserita nei menu.
 
+### Trappole già pagate
+
+- **La sfumatura dei menu non deve tornare `position: fixed`.** Su iPhone,
+  con l'app installata sulla schermata Home, la striscia in cima allo
+  schermo — quella dell'orologio — mostra la pagina. Da fissa, la sfumatura
+  finiva su un livello composto a parte che iOS non ridisegnava quando
+  cambiava solo la sua variabile di colore: scorrendo i giorni restava lassù
+  il colore del menu di prima. Da assoluta il problema sparisce, e il
+  comportamento è anche più naturale, perché il colore scorre con la pagina.
+- **La data di compilazione in *Altro*** serve a sapere quale versione gira
+  su un telefono: il service worker aggiorna l'app da sé, e senza quel dato
+  non c'è modo di distinguere un codice nuovo che non funziona da un codice
+  vecchio ancora in cache. Il fuso è fissato su `Europe/Rome` perché a
+  compilare è GitHub, che lavora in UTC.
+
 ### Rigenerare il file da importare
 
 Dopo un export dei dati dall'app:
