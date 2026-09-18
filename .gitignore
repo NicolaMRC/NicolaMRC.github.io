@@ -4,3 +4,7 @@ dist-ssr
 *.local
 *.tsbuildinfo
 .DS_Store
+
+# Dati personali: il piano alimentare e gli strumenti che lo trascrivono.
+# Il repository è pubblico, questa roba non ci deve finire.
+strumenti-locali/

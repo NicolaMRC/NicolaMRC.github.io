@@ -93,3 +93,44 @@ src/
 - [x] **Tappa 3** — lista della spesa aggregata, per reparto, con spunta e condivisione
 - [x] **Tappa 5** — ricette, equivalenze e varianti dei pasti
 - [x] **Tappa 6** — scheda personale, rilevazioni e grafico del peso
+
+## Riprendere il lavoro in una sessione nuova
+
+Tutto quello che serve sta in questa cartella e nel repository.
+
+- **Il codice** è qui, con la cronologia git completa, e si pubblica da solo a
+  ogni `git push` su <https://nicolamrc.github.io>.
+- **I dati** (alimenti, menu, settimane, misurazioni) vivono nel browser e
+  hanno una copia nel repository privato configurato in *Altro → Backup*.
+  Non stanno qui e non vanno mai commessi.
+- **`strumenti-locali/`** contiene la scansione del piano nutrizionale e gli
+  script che l'hanno trascritta. È escluso dal versionamento di proposito:
+  sono dati sanitari e questo repository è pubblico.
+
+### Convenzioni decise
+
+- **Nomi dei menu**: `Menu A1`…`A7` per la prima settimana del piano, `B` e
+  `C` per le successive, `D1`–`D3` per le seconde versioni di lunedì, martedì
+  e mercoledì della terza. Il numero è il giorno, da lunedì a domenica.
+- **Nomi degli alimenti**: dicono *cosa si compra*, non come si cucina —
+  «Zucchine», non «zucchine crude» o «zucchine bollite». Restano solo le
+  parole che identificano un prodotto diverso allo scaffale: affumicato,
+  sott'olio, in scatola, grattugiato, e il cotto/crudo del prosciutto.
+- **Alternative**: quando il piano dà due versioni dello stesso giorno che
+  cambiano poco (la colazione, una grammatura), diventano alternative dentro
+  un unico menu. Quando cambiano quasi tutti i pasti, diventano menu separati.
+- **Tag**: si usano solo quelli di *proteina principale* e *tipo di piatto*.
+  Stagionalità, caratteristiche e tipo di giornata si impostano a mano.
+- **Acqua**: non viene mai inserita nei menu.
+
+### Rigenerare il file da importare
+
+Dopo un export dei dati dall'app:
+
+```bash
+cd strumenti-locali
+node genera.mjs <export-app.json> <file-da-importare.json>
+```
+
+Lo script riusa gli alimenti esistenti per nome, crea solo quelli mancanti e
+non tocca nulla di quello che c'è già.
