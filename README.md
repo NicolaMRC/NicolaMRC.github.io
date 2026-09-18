@@ -1,4 +1,4 @@
-# Piano Alimentare
+# PrepEat
 
 Web app installabile (PWA) per gestire il piano alimentare: menu giornalieri,
 liste della spesa settimanali, ricette con varianti e scheda personale delle
